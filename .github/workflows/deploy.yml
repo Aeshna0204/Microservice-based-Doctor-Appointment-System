@@ -59,7 +59,9 @@ jobs:
             MAILER_SENDGRID_API_KEY=${{ secrets.MAILER_SENDGRID_API_KEY }}
             MAILER_FROM_EMAIL=${{ secrets.MAILER_FROM_EMAIL }}
             EOF
-
+            
+            git reset --hard
+            git pull origin main
             docker compose pull
             docker compose up -d --remove-orphans
 
