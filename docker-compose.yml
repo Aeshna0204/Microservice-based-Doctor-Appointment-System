@@ -28,8 +28,14 @@ services:
     depends_on:
       - postgres
       - redis
-    env_file:
-      - ./services/user-service/.env
+    environment:
+      PORT: ${USER_SERVICE_PORT}
+      DATABASE_URL: ${USER_SERVICE_DATABASE_URL}
+      REDIS_URL: ${USER_SERVICE_REDIS_URL}
+      JWT_SECRET: ${USER_SERVICE_JWT_SECRET}
+      CLOUDINARY_CLOUD_NAME: ${USER_SERVICE_CLOUDINARY_CLOUD_NAME}
+      CLOUDINARY_API_KEY: ${USER_SERVICE_CLOUDINARY_API_KEY}
+      CLOUDINARY_API_SECRET: ${USER_SERVICE_CLOUDINARY_API_SECRET}
     
   mailer-service:
     build: ./services/mailer-service
@@ -37,9 +43,10 @@ services:
     restart: always
     depends_on:
       - redis
-    env_file:
-      - ./services/mailer-service/.env
-
+    environment:
+      SENDGRID_API_KEY: ${MAILER_SENDGRID_API_KEY}
+      FROM_EMAIL: ${MAILER_FROM_EMAIL}
+      
 volumes:
   pgdata:
 
