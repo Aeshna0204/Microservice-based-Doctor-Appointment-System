@@ -8,6 +8,7 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    environment: VM Enviornment
 
     steps:
       # Checkout code
@@ -45,5 +46,22 @@ jobs:
           key: ${{ secrets.AZURE_SSH_KEY }}
           script: |
             cd /app
+
+            # Write environment secrets into .env file
+            cat > .env <<EOF
+            USER_SERVICE_PORT=${{ secrets.USER_SERVICE_PORT }}
+            USER_SERVICE_DATABASE_URL=${{ secrets.USER_SERVICE_DATABASE_URL }}
+            USER_SERVICE_REDIS_URL=${{ secrets.USER_SERVICE_REDIS_URL }}
+            USER_SERVICE_JWT_SECRET=${{ secrets.USER_SERVICE_JWT_SECRET }}
+            USER_SERVICE_CLOUDINARY_CLOUD_NAME=${{ secrets.USER_SERVICE_CLOUDINARY_CLOUD_NAME }}
+            USER_SERVICE_CLOUDINARY_API_KEY=${{ secrets.USER_SERVICE_CLOUDINARY_API_KEY }}
+            USER_SERVICE_CLOUDINARY_API_SECRET=${{ secrets.USER_SERVICE_CLOUDINARY_API_SECRET }}
+            MAILER_SENDGRID_API_KEY=${{ secrets.MAILER_SENDGRID_API_KEY }}
+            MAILER_FROM_EMAIL=${{ secrets.MAILER_FROM_EMAIL }}
+            EOF
+
             docker compose pull
             docker compose up -d --remove-orphans
+
+            rm .env
+
