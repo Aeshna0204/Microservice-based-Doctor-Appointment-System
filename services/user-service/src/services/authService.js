@@ -98,21 +98,3 @@ exports.resetPassword = async (email, otp, newPassword) => {
     return { message: "Password reset successful" };
 }
 
-exports.getAllUsers = async () => {
-    const users= await prisma.user.findMany({
-        select: {
-            id: true,
-            name: true,
-            email: true,
-            role: true,
-            age: true,
-            mobileNumber: true,
-            address: true,
-            profilePic: true
-        }
-    });
-    if(!users || users.length === 0) {
-        throw new Error("No users found");
-    }
-    return users;
-}

@@ -73,17 +73,3 @@ exports.resetPassword=async(req,res)=>{
     }
 }
 
-exports.getAllUsers=async(req,res)=>{
-    try{
-
-        const users=await authService.getAllUsers();
-        if(!users){
-            return res.status(500).json({message:"Failed to fetch users, please try again later"});
-        }
-        return res.status(200).json({message:"Users fetched successfully",users:users});
-
-
-    }catch(error){
-        return res.status(500).json({message:error.message});
-    }
-}

@@ -23,11 +23,19 @@ services:
 
   user-service:
     build: ./services/user-service
+    volumes:
+    - ./services/user-service:/usr/src/app
+    - ./shared:/usr/src/app/shared
+    - /usr/src/app/node_modules
+         
     ports:
       - "4001:4001"
     depends_on:
       - postgres
       - redis
+    
+    # env_file:
+    #   - ./services/user-service/.env
     environment:
       PORT: ${USER_SERVICE_PORT}
       DATABASE_URL: ${USER_SERVICE_DATABASE_URL}
@@ -40,12 +48,19 @@ services:
   mailer-service:
     build: ./services/mailer-service
     container_name: mailer-service
+    volumes:
+    - ./services/mailer-service:/usr/src/app
+    - ./shared:/usr/src/app/shared
+    - /usr/src/app/node_modules
     restart: always
     depends_on:
       - redis
+    # env_file:
+    #   - ./services/mailer-service/.env
     environment:
       SENDGRID_API_KEY: ${MAILER_SENDGRID_API_KEY}
       FROM_EMAIL: ${MAILER_FROM_EMAIL}
+
       
 volumes:
   pgdata:

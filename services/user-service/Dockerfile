@@ -18,8 +18,12 @@ RUN npx prisma generate
 # Copy rest of app
 COPY . .
 
+# install nodemon for live reload
+RUN npm install -g nodemon
+
+
 # Expose port
 EXPOSE 4001
 
 # Start the app
-CMD ["node", "src/index.js"]
+CMD ["nodemon", "src/index.js"]
